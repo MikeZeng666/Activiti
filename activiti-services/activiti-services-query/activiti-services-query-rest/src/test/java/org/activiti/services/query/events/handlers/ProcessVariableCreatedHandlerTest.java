@@ -66,7 +66,7 @@ public class ProcessVariableCreatedHandlerTest {
 
         //then
         verify(variableRepository).save(variable);
-        verify(processInstance).addVariable(variable);
+//        verify(processInstance).addVariable(variable);
         verify(processInstanceRepository).save(processInstance);
     }
 }

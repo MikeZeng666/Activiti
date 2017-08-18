@@ -66,7 +66,6 @@ public class TaskVariableCreatedHandlerTest {
 
         //then
         verify(taskRepository).save(task);
-        verify(task).addVariable(variable);
         verify(variableRepository).save(variable);
     }
 

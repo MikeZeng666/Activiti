@@ -16,41 +16,23 @@
 
 package org.activiti.services.query.events.handlers;
 
-import org.activiti.services.query.model.Task;
-import org.activiti.services.query.model.Variable;
-import org.activiti.services.query.app.repository.EntityFinder;
-import org.activiti.services.query.app.repository.TaskRepository;
 import org.activiti.services.query.app.repository.VariableRepository;
+import org.activiti.services.query.model.Variable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TaskVariableCreatedHandler {
 
-    private final TaskRepository taskRepository;
-
-    private final EntityFinder entityFinder;
-
     private final VariableRepository variableRepository;
 
     @Autowired
-    public TaskVariableCreatedHandler(TaskRepository taskRepository,
-                                      EntityFinder entityFinder,
-                                      VariableRepository variableRepository) {
-        this.taskRepository = taskRepository;
-        this.entityFinder = entityFinder;
+    public TaskVariableCreatedHandler(VariableRepository variableRepository) {
         this.variableRepository = variableRepository;
     }
 
     public void handle(Variable variable) {
-        String taskId = variable.getTaskId();
-        Task task = entityFinder.findById(taskRepository,
-                                          taskId,
-                                          "Unable to find task for the given id: " + taskId);
         variableRepository.save(variable);
-
-        task.addVariable(variable);
-        taskRepository.save(task);
     }
 
 }

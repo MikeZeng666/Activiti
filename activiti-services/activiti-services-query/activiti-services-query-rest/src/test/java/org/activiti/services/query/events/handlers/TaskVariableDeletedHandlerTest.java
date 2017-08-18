@@ -73,7 +73,6 @@ public class TaskVariableDeletedHandlerTest {
         handler.handle(event);
 
         //then
-        verify(task).removeVariable(variable);
         verify(taskRepository).save(task);
         verify(variableRepository).delete(variable);
     }

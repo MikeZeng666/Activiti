@@ -16,40 +16,22 @@
 
 package org.activiti.services.query.events.handlers;
 
-import org.activiti.services.query.model.ProcessInstance;
-import org.activiti.services.query.model.Variable;
-import org.activiti.services.query.app.repository.EntityFinder;
-import org.activiti.services.query.app.repository.ProcessInstanceRepository;
 import org.activiti.services.query.app.repository.VariableRepository;
+import org.activiti.services.query.model.Variable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProcessVariableCreatedHandler {
 
-    private final EntityFinder entityFinder;
-
-    private final ProcessInstanceRepository processInstanceRepository;
-
     private final VariableRepository variableRepository;
 
     @Autowired
-    public ProcessVariableCreatedHandler(EntityFinder entityFinder,
-                                         ProcessInstanceRepository processInstanceRepository,
-                                         VariableRepository variableRepository) {
-        this.entityFinder = entityFinder;
-        this.processInstanceRepository = processInstanceRepository;
+    public ProcessVariableCreatedHandler(VariableRepository variableRepository) {
         this.variableRepository = variableRepository;
     }
 
     public void handle(Variable variable) {
-        String processInstanceId = variable.getProcessInstanceId();
-        ProcessInstance processInstance = entityFinder.findById(processInstanceRepository,
-                                                                Long.parseLong(processInstanceId),
-                                                                "Unable to find process instance for the given id: " + processInstanceId);
         variableRepository.save(variable);
-
-        processInstance.addVariable(variable);
-        processInstanceRepository.save(processInstance);
     }
 }
